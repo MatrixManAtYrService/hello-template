@@ -1,0 +1,87 @@
+[project]
+name = "hello"
+description = "a project template"
+readme = "README.md"
+authors = [
+    { name = "Matrix", email = "MatrixManAtYrService@users.noreply.github.com" },
+]
+requires-python = ">=3.12"
+dependencies = [
+    "typer>=0.16.0",
+]
+# [[[cog
+# import os
+# version = os.environ.get("HELLO_VERSION", "0.1.0-dev")
+# cog.out(f'version = "{version}"')
+# ]]]
+version = "0.1.0-dev202512170800"
+# [[[end]]]
+
+[project.scripts]
+hello = "hello.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+packages = ["src/hello"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort (import sorting)
+    "UP",  # pyupgrade
+    "B" ,  # flake8-bugbear
+    "SIM", # flake8-simplify
+    "A",   # flake8-builtins
+    "ANN", # flake8-annotations
+    "C"  , # flake8-comprehensions
+]
+
+fixable = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["hello"]
+force-single-line = false
+combine-as-imports = true
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+]
+
+[tool.pyright]
+include = ["src/hello"]
+
+exclude = [
+    "**/__pycache__",
+    "**/.*",
+    "**/.git",
+    "**/venv",
+    "**/result",
+    "**/target",
+    "**/dist",
+    "**/build",
+]
+typeCheckingMode = "strict"
+reportMissingTypeStubs = "error"
+reportUnknownMemberType = "error"
+reportUnknownArgumentType = "error"
+reportUnknownVariableType = "error"
+reportUnknownParameterType = "error"
+reportMissingParameterType = "error"
+reportMissingReturnType = "error"
+reportUntypedFunctionDecorator = "error"
+reportUntypedClassDecorator = "error"
+reportUntypedBaseClass = "error"
+reportUntypedNamedTuple = "error"
+reportAny = "error"
