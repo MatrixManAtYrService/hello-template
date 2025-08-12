@@ -3,5 +3,5 @@
 # version = os.environ.get("HELLO_VERSION", "0.1.0-dev")
 # cog.out(f'__version__ = "{version}"')
 # ]]]
-__version__ = "0.1.1"
+__version__ = "0.1.1-dev202508122307"
 # [[[end]]]
