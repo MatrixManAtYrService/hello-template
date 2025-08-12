@@ -77,6 +77,7 @@
           default = pythonEnv;
           nix-analysis = pkgs.callPackage ./nix/nix-analysis.nix { };
           python-analysis = pkgs.callPackage ./nix/python-analysis.nix { };
+          docs = pkgs.callPackage ./nix/docs.nix { };
           codegen = pkgs.callPackage ./nix/codegen.nix { };
           version-bump = pkgs.callPackage ./nix/version-bump.nix { };
         };

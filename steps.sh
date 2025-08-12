@@ -12,9 +12,12 @@ fi
 
 set -x
 
-# Code generation first (constants, versions, tool configs)
+# Code generation first
 nix run .#codegen
 
 # Analysis second
 nix run .#nix-analysis
 nix run .#python-analysis
+
+# Generate documentation
+nix run .#docs
