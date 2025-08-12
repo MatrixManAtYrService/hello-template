@@ -141,9 +141,9 @@ let
     # Run codegen to propagate the version changes via Cog
     [[ "$VERBOSE" == "true" ]] && set -x
     if [[ "$VERBOSE" == "true" ]]; then
-      ${pkgs.nix}/bin/nix run .#codegen -- -v
+      HELLO_VERSION_MAJOR=$HELLO_VERSION_MAJOR HELLO_VERSION_MINOR=$HELLO_VERSION_MINOR HELLO_VERSION_PATCH=$HELLO_VERSION_PATCH HELLO_VERSION_PRERELEASE=$HELLO_VERSION_PRERELEASE ${pkgs.nix}/bin/nix run .#codegen -- -v
     else
-      ${pkgs.nix}/bin/nix run .#codegen
+      HELLO_VERSION_MAJOR=$HELLO_VERSION_MAJOR HELLO_VERSION_MINOR=$HELLO_VERSION_MINOR HELLO_VERSION_PATCH=$HELLO_VERSION_PATCH HELLO_VERSION_PRERELEASE=$HELLO_VERSION_PRERELEASE ${pkgs.nix}/bin/nix run .#codegen
     fi
     [[ "$VERBOSE" == "true" ]] && set +x
 

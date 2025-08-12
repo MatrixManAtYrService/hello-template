@@ -7,7 +7,7 @@ import typer
 # version = os.environ.get("HELLO_VERSION", "0.1.0-dev")
 # cog.out(f'__version__ = "{version}"')
 # ]]]
-__version__ = "0.1.0-dev202512170800"
+__version__ = "0.1.0-dev202508122304"
 # [[[end]]]
 
 app = typer.Typer(help="Hello world CLI application")

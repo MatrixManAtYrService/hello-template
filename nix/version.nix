@@ -16,7 +16,7 @@ let
   major = 0;
   minor = 1;
   patch = 0;
-  prerelease = "dev202512170800"; # Set by --prerelease, empty for stable releases
+  prerelease = "dev202508122304"; # Set by --prerelease, empty for stable releases
   # [[[end]]]
 
   # Synthesized version strings from components

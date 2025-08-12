@@ -14,7 +14,7 @@ dependencies = [
 # version = os.environ.get("HELLO_VERSION", "0.1.0-dev")
 # cog.out(f'version = "{version}"')
 # ]]]
-version = "0.1.0-dev202512170800"
+version = "0.1.0-dev202508122304"
 # [[[end]]]
 
 [project.scripts]
