@@ -21,13 +21,14 @@ To use this as a template for your own project:
    ```bash
    nix run .#codegen
    ```
-4. **Rename the source directory**: `mv src/hello src/my-project`
-5. **Update CI badge** in README.md to point to your repository
-6. **Regenerate `uv.lock`**
+4. Consider enabling github pages and updating the module docs in [src/hello/__init__.py](src/hello/__init__.py).
+5. **Rename the source directory**: `mv src/hello src/my-project`
+6. **Update CI badge** in README.md to point to your repository
+7. **Regenerate `uv.lock`**
    ```
    nix develop --command "uv lock"
    ````
-7. search the repo for "hello" to fix any other references (likely among the python source files)
+8. search the repo for "hello" to fix any other references (likely among the python source files)
 
 The code generator will automatically update:
 - `pyproject.toml` (project name and entry points)
