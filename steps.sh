@@ -15,9 +15,12 @@ set -x
 # Code generation first
 nix run .#codegen
 
-# Analysis second
+# Analysis tools grouped by language
 nix run .#nix-analysis
 nix run .#python-analysis
+
+# Tests - run pytest in the development environment
+$NIX_CMD develop --command pytest
 
 # Generate documentation
 nix run .#docs

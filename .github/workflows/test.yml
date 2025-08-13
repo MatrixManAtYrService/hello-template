@@ -1,0 +1,52 @@
+name: Test
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'nix/**'
+      - '*.nix'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/**'
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: nixbuild/nix-quick-install-action@v30
+
+      - name: Restore and save Nix store
+        uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-
+          gc-max-store-size: 8G
+          purge: true
+          purge-prefixes: nix-
+          purge-created: 0
+          purge-last-accessed: 0
+          purge-primary-key: never
+
+      - name: Run code generation
+        run: nix run .#codegen
+
+      - name: Run Nix analysis
+        run: nix run .#nix-analysis
+
+      - name: Run Python analysis
+        run: nix run .#python-analysis
+
+      - name: Run tests
+        run: nix develop --command pytest
+
+      - name: Generate documentation
+        run: nix run .#docs

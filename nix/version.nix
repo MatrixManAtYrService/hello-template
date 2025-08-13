@@ -14,8 +14,8 @@ let
   # cog.outl(f'  prerelease = "{os.environ.get("HELLO_VERSION_PRERELEASE", "dev202512170800")}"; # Set by --prerelease, empty for stable releases')
   # ]]]
   major = 0;
-  minor = 1;
-  patch = 1;
+  minor = 2;
+  patch = 0;
   prerelease = "dev202512170800"; # Set by --prerelease, empty for stable releases
   # [[[end]]]
 
