@@ -17,24 +17,19 @@ To use this as a template for your own project:
      greeting = "Hello there!";  # Your CLI greeting message
    }
    ```
-3. **Run the code generator** to apply changes:
+3. **Search for 'hello'** in `pyproject.toml` and replace it with your project name.
+4. **Run the code generator** to apply changes:
    ```bash
    nix run .#codegen
    ```
-4. Consider enabling github pages and updating the module docs in [src/hello/__init__.py](src/hello/__init__.py).
 5. **Rename the source directory**: `mv src/hello src/my-project`
-6. **Update CI badge** in README.md to point to your repository
-7. **Regenerate `uv.lock`**
+6. Consider enabling github pages and updating the module docs in [src/hello/__init__.py](src/hello/__init__.py).
+7. **Update CI badge** in README.md to point to your repository
+8. **Regenerate `uv.lock`**
    ```
-   nix develop --command "uv lock"
+   nix-shell -p uv --command "uv lock
    ````
-8. search the repo for "hello" to fix any other references (likely among the python source files)
-
-The code generator will automatically update:
-- `pyproject.toml` (project name and entry points)
-- Python source files (import statements, greeting message, version output)
-- Test files (imports and assertions)
-- Documentation generation
+9. search the repo for "hello" to fix any other references (likely among the python source files)
 
 ## Things to try
 
