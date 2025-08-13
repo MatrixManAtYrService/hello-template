@@ -1,4 +1,4 @@
-# Version bumping script for hello project
+# Version bumping script for project
 { pkgs, ... }:
 
 let
@@ -96,33 +96,33 @@ let
     # Calculate new version components and set environment variables for Cog
     case $BUMP_TYPE in
       patch)
-        export HELLO_VERSION_MAJOR=$CURRENT_MAJOR
-        export HELLO_VERSION_MINOR=$CURRENT_MINOR
-        export HELLO_VERSION_PATCH=$((CURRENT_PATCH + 1))
-        export HELLO_VERSION_PRERELEASE=""
-        NEW_VERSION="$HELLO_VERSION_MAJOR.$HELLO_VERSION_MINOR.$HELLO_VERSION_PATCH"
+        export VERSION_MAJOR=$CURRENT_MAJOR
+        export VERSION_MINOR=$CURRENT_MINOR
+        export VERSION_PATCH=$((CURRENT_PATCH + 1))
+        export VERSION_PRERELEASE=""
+        NEW_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH"
         ;;
       minor)
-        export HELLO_VERSION_MAJOR=$CURRENT_MAJOR
-        export HELLO_VERSION_MINOR=$((CURRENT_MINOR + 1))
-        export HELLO_VERSION_PATCH=0
-        export HELLO_VERSION_PRERELEASE=""
-        NEW_VERSION="$HELLO_VERSION_MAJOR.$HELLO_VERSION_MINOR.$HELLO_VERSION_PATCH"
+        export VERSION_MAJOR=$CURRENT_MAJOR
+        export VERSION_MINOR=$((CURRENT_MINOR + 1))
+        export VERSION_PATCH=0
+        export VERSION_PRERELEASE=""
+        NEW_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH"
         ;;
       major)
-        export HELLO_VERSION_MAJOR=$((CURRENT_MAJOR + 1))
-        export HELLO_VERSION_MINOR=0
-        export HELLO_VERSION_PATCH=0
-        export HELLO_VERSION_PRERELEASE=""
-        NEW_VERSION="$HELLO_VERSION_MAJOR.$HELLO_VERSION_MINOR.$HELLO_VERSION_PATCH"
+        export VERSION_MAJOR=$((CURRENT_MAJOR + 1))
+        export VERSION_MINOR=0
+        export VERSION_PATCH=0
+        export VERSION_PRERELEASE=""
+        NEW_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH"
         ;;
       prerelease)
         # Generate UTC timestamp in Python-compatible format: dev202512171234
         UTC_TIMESTAMP=$(${pkgs.coreutils}/bin/date -u '+dev%Y%m%d%H%M')
-        export HELLO_VERSION_MAJOR=$CURRENT_MAJOR
-        export HELLO_VERSION_MINOR=$CURRENT_MINOR
-        export HELLO_VERSION_PATCH=$CURRENT_PATCH
-        export HELLO_VERSION_PRERELEASE="$UTC_TIMESTAMP"
+        export VERSION_MAJOR=$CURRENT_MAJOR
+        export VERSION_MINOR=$CURRENT_MINOR
+        export VERSION_PATCH=$CURRENT_PATCH
+        export VERSION_PRERELEASE="$UTC_TIMESTAMP"
         NEW_VERSION="$CURRENT_MAJOR.$CURRENT_MINOR.$CURRENT_PATCH-$UTC_TIMESTAMP"
 
         if [[ "$VERBOSE" == "true" ]]; then
@@ -141,9 +141,9 @@ let
     # Run codegen to propagate the version changes via Cog
     [[ "$VERBOSE" == "true" ]] && set -x
     if [[ "$VERBOSE" == "true" ]]; then
-      HELLO_VERSION_MAJOR=$HELLO_VERSION_MAJOR HELLO_VERSION_MINOR=$HELLO_VERSION_MINOR HELLO_VERSION_PATCH=$HELLO_VERSION_PATCH HELLO_VERSION_PRERELEASE=$HELLO_VERSION_PRERELEASE ${pkgs.nix}/bin/nix run .#codegen -- -v
+      VERSION_MAJOR=$VERSION_MAJOR VERSION_MINOR=$VERSION_MINOR VERSION_PATCH=$VERSION_PATCH VERSION_PRERELEASE=$VERSION_PRERELEASE ${pkgs.nix}/bin/nix run .#codegen -- -v
     else
-      HELLO_VERSION_MAJOR=$HELLO_VERSION_MAJOR HELLO_VERSION_MINOR=$HELLO_VERSION_MINOR HELLO_VERSION_PATCH=$HELLO_VERSION_PATCH HELLO_VERSION_PRERELEASE=$HELLO_VERSION_PRERELEASE ${pkgs.nix}/bin/nix run .#codegen
+      VERSION_MAJOR=$VERSION_MAJOR VERSION_MINOR=$VERSION_MINOR VERSION_PATCH=$VERSION_PATCH VERSION_PRERELEASE=$VERSION_PRERELEASE ${pkgs.nix}/bin/nix run .#codegen
     fi
     [[ "$VERBOSE" == "true" ]] && set +x
 
@@ -181,7 +181,7 @@ pkgs.stdenv.mkDerivation {
   '';
 
   meta = with pkgs.lib; {
-    description = "Version bumping script for hello project with prerelease support";
+    description = "Version bumping script with prerelease support";
     mainProgram = "version-bump";
     platforms = platforms.unix;
   };

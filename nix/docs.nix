@@ -1,5 +1,5 @@
-# Documentation generation for hello project
-{ pkgs, ... }:
+# Documentation generation for project
+{ pkgs, constants, ... }:
 
 let
   common = import ./common.nix { inherit pkgs; };
@@ -15,19 +15,19 @@ let
     # Ensure docs directory exists
     mkdir -p docs
 
-    # Generate hello docs
-    echo '📚 Generating hello documentation...'
-    pdoc --output-directory docs hello
-    echo '📚 Generated hello docs in ./docs/ directory'
+    # Generate project docs
+    echo '📚 Generating ${constants.name} documentation...'
+    pdoc --output-directory docs ${constants.name}
+    echo '📚 Generated ${constants.name} docs in ./docs/ directory'
 
     echo '📚 Documentation has been generated in docs/ directory'
-    echo '💡 Open docs/hello.html in your browser to view the documentation'
+    echo '💡 Open docs/${constants.name}.html in your browser to view the documentation'
   '';
 
   # Create a single check that generates all docs
   pdocCheck = makeCheck {
     name = "pdoc";
-    description = "Generate API documentation for hello";
+    description = "Generate API documentation for ${constants.name}";
     dependencies = with pkgs; [ ];
     command = ''
       nix develop --command bash ${pdocScript}

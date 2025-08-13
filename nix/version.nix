@@ -1,4 +1,4 @@
-# Single source of truth for version information across hello project
+# Single source of truth for version information across project
 let
   # The code below is generated, see nix/version-bump.nix for the code that generates it.
   #
@@ -8,13 +8,13 @@ let
   #
   # [[[cog
   # import os
-  # cog.outl(f'  major = {os.environ.get("HELLO_VERSION_MAJOR", "0")};')
-  # cog.outl(f'  minor = {os.environ.get("HELLO_VERSION_MINOR", "1")};')
-  # cog.outl(f'  patch = {os.environ.get("HELLO_VERSION_PATCH", "0")};')
-  # cog.outl(f'  prerelease = "{os.environ.get("HELLO_VERSION_PRERELEASE", "dev202512170800")}"; # Set by --prerelease, empty for stable releases')
+  # cog.outl(f'  major = {os.environ.get("VERSION_MAJOR", "0")};')
+  # cog.outl(f'  minor = {os.environ.get("VERSION_MINOR", "1")};')
+  # cog.outl(f'  patch = {os.environ.get("VERSION_PATCH", "0")};')
+  # cog.outl(f'  prerelease = "{os.environ.get("VERSION_PRERELEASE", "dev202512170800")}"; # Set by --prerelease, empty for stable releases')
   # ]]]
   major = 0;
-  minor = 2;
+  minor = 1;
   patch = 0;
   prerelease = "dev202512170800"; # Set by --prerelease, empty for stable releases
   # [[[end]]]
@@ -32,7 +32,7 @@ in
 
   # Package-specific formats
   python = {
-    # Referenced in: pyproject.toml, src/hello/__init__.py, src/hello/cli.py
+    # Referenced in: pyproject.toml, src/PROJECT_NAME/__init__.py, src/PROJECT_NAME/cli.py
     # Used as: Python package version
     inherit version;
   };

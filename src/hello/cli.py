@@ -4,23 +4,35 @@ import typer
 
 # [[[cog
 # import os
-# version = os.environ.get("HELLO_VERSION", "0.1.0-dev")
+# version = os.environ.get("VERSION", "0.1.0-dev")
 # cog.out(f'__version__ = "{version}"')
 # ]]]
-__version__ = "0.2.0-dev202512170800"
+__version__ = "0.1.0-dev202512170800"
 # [[[end]]]
 
 app = typer.Typer(help="Hello world CLI application")
 
 
 def message() -> str:
+    # [[[cog
+    # import os
+    # greeting = os.environ.get("PROJECT_GREETING", "hello world!")
+    # cog.out(f'    return "{greeting}"')
+    # ]]]
     return "hello world!"
+    # [[[end]]]
 
 
 def version_callback(value: bool) -> None:
     """Show version and exit."""
     if value:
+        # [[[cog
+        # import os
+        # project_name = os.environ.get("PROJECT_NAME", "hello")
+        # cog.out(f'        typer.echo(f"{project_name} {{__version__}}")')
+        # ]]]
         typer.echo(f"hello {__version__}")
+        # [[[end]]]
         raise typer.Exit()
 
 

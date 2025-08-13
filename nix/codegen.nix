@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, constants, ... }:
 
 let
   common = import ./common.nix { inherit pkgs; };
@@ -7,20 +7,33 @@ let
   # Import version information
   version = import ./version.nix;
 
-  # Convert version info to environment variables for Cog
+  # Environment variables for version generation
   versionEnv = {
-    HELLO_VERSION = version.python.version;
-    HELLO_VERSION_MAJOR = toString version.major;
-    HELLO_VERSION_MINOR = toString version.minor;
-    HELLO_VERSION_PATCH = toString version.patch;
+    VERSION = version.python.version;
+    VERSION_MAJOR = toString version.major;
+    VERSION_MINOR = toString version.minor;
+    VERSION_PATCH = toString version.patch;
   };
 
-  # List of files that contain Cog blocks for code generation
-  files = [
+  # Environment variables for constants/project template generation
+  constantsEnv = {
+    PROJECT_NAME = constants.name;
+    PROJECT_GREETING = constants.greeting;
+  };
+
+  # Files that contain version information
+  versionFiles = [
     "nix/version.nix"
     "pyproject.toml"
-    "src/hello/__init__.py"
-    "src/hello/cli.py"
+    "src/${constants.name}/__init__.py"
+    "src/${constants.name}/cli.py"
+  ];
+
+  # Files that contain project constants/template information
+  constantsFiles = [
+    "pyproject.toml"
+    "src/${constants.name}/cli.py"
+    "tests/test_cli.py"
   ];
 
   # Generate version check
@@ -31,13 +44,31 @@ let
     environment = versionEnv;
     command = ''
       echo "Generating version information..."
-      ${pkgs.lib.concatStringsSep "\n" (map (file: "cog -r ${file}") files)}
+      ${pkgs.lib.concatStringsSep "\n" (map (file: "cog -r ${file}") versionFiles)}
       echo "Version generation complete."
     '';
     verboseCommand = ''
       echo "Generating version information with verbose output..."
-      ${pkgs.lib.concatStringsSep "\n" (map (file: "cog -r -v ${file}") files)}
+      ${pkgs.lib.concatStringsSep "\n" (map (file: "cog -r -v ${file}") versionFiles)}
       echo "Version generation complete."
+    '';
+  };
+
+  # Generate constants check
+  generateConstantsCheck = makeCheck {
+    name = "generate-constants";
+    description = "Generate project constants in source files";
+    dependencies = with pkgs; [ python3Packages.cogapp ];
+    environment = constantsEnv;
+    command = ''
+      echo "Generating project constants..."
+      ${pkgs.lib.concatStringsSep "\n" (map (file: "cog -r ${file}") constantsFiles)}
+      echo "Constants generation complete."
+    '';
+    verboseCommand = ''
+      echo "Generating project constants with verbose output..."
+      ${pkgs.lib.concatStringsSep "\n" (map (file: "cog -r -v ${file}") constantsFiles)}
+      echo "Constants generation complete."
     '';
   };
 
@@ -64,8 +95,9 @@ let
 in
 createAnalysisPackage {
   name = "codegen";
-  description = "Code generation (version sync and whitespace cleanup)";
+  description = "Code generation (version sync, constants, and whitespace cleanup)";
   checks = {
+    generate-constants = generateConstantsCheck;
     generate-version = generateVersionCheck;
     trim-whitespace = trimWhitespaceCheck;
   };

@@ -33,6 +33,9 @@
           inherit system;
         };
 
+        # Import project constants
+        constants = import ./nix/constants.nix { inherit pkgs; };
+
         python = pkgs.python312;
         workspace = uv2nix.lib.workspace.loadWorkspace {
           workspaceRoot = ./.;
@@ -59,7 +62,7 @@
           nixpkgs.lib.composeManyExtensions [
             editableOverlay
             (final: prev: {
-              hello = prev.hello.overrideAttrs (old: {
+              ${constants.name} = prev.${constants.name}.overrideAttrs (old: {
                 nativeBuildInputs =
                   old.nativeBuildInputs
                   ++ final.resolveBuildSystem {
@@ -70,29 +73,29 @@
           ]
         );
 
-        pythonEnv = pythonSet.mkVirtualEnv "hello" workspace.deps.default;
+        pythonEnv = pythonSet.mkVirtualEnv constants.name workspace.deps.default;
       in
       {
         packages = {
           default = pythonEnv;
           nix-analysis = pkgs.callPackage ./nix/nix-analysis.nix { };
           python-analysis = pkgs.callPackage ./nix/python-analysis.nix { };
-          docs = pkgs.callPackage ./nix/docs.nix { };
-          codegen = pkgs.callPackage ./nix/codegen.nix { };
+          docs = pkgs.callPackage ./nix/docs.nix { inherit constants; };
+          codegen = pkgs.callPackage ./nix/codegen.nix { inherit constants; };
           version-bump = pkgs.callPackage ./nix/version-bump.nix { };
         };
 
         apps = rec {
           default = {
             type = "app";
-            program = "${pythonEnv}/bin/hello";
+            program = "${pythonEnv}/bin/${constants.name}";
           };
           hello = default;
         };
 
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
-            (editablePythonSet.mkVirtualEnv "hello" workspace.deps.all)
+            (editablePythonSet.mkVirtualEnv constants.name workspace.deps.all)
             uv
             ruff
             python312Packages.python-lsp-ruff
