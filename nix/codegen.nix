@@ -19,7 +19,7 @@ let
   constantsEnv = {
     PROJECT_NAME = constants.name;
     PROJECT_GREETING = constants.greeting;
-  };
+  } // versionEnv;
 
   # Files that contain version information
   versionFiles = [

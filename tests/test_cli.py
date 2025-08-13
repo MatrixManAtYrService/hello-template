@@ -7,7 +7,6 @@ from pathlib import Path
 # cog.out(f"from {project_name} import cli")
 # ]]]
 from hello import cli
-
 # [[[end]]]
 
 repo_root = Path(__file__).parent.parent

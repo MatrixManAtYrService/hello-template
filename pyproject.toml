@@ -1,7 +1,7 @@
 [project]
 # [[[cog
 # import os
-# project_name = os.environ.get("PROJECT_NAME", "hello")
+# project_name = os.environ["PROJECT_NAME"]
 # cog.out(f'name = "{project_name}"')
 # ]]]
 name = "hello"
@@ -17,7 +17,7 @@ dependencies = [
 ]
 # [[[cog
 # import os
-# version = os.environ.get("VERSION", "0.1.0-dev")
+# version = os.environ["VERSION"]
 # cog.out(f'version = "{version}"')
 # ]]]
 version = "0.1.0-dev202512170800"
@@ -26,7 +26,7 @@ version = "0.1.0-dev202512170800"
 [project.scripts]
 # [[[cog
 # import os
-# project_name = os.environ.get("PROJECT_NAME", "hello")
+# project_name = os.environ["PROJECT_NAME"]
 # cog.out(f'{project_name} = "{project_name}.cli:main"')
 # ]]]
 hello = "hello.cli:main"
