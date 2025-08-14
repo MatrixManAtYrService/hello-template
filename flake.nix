@@ -75,7 +75,7 @@
 
         pythonEnv = pythonSet.mkVirtualEnv constants.name workspace.deps.default;
       in
-      {
+      rec {
         packages = {
           default = pythonEnv;
           nix-analysis = pkgs.callPackage ./nix/nix-analysis.nix { };

@@ -10,8 +10,8 @@ let
     description = "Python linting with ruff (auto-fix enabled)";
     dependencies = with pkgs; [ ruff ];
     roots = [ "src" "tests" ];
-    command = "ruff check --fix --unsafe-fixes";
-    verboseCommand = "ruff check --fix --unsafe-fixes --verbose";
+    command = "ruff check --fix --unsafe-fixes --exit-non-zero-on-fix";
+    verboseCommand = "ruff check --fix --unsafe-fixes --exit-non-zero-on-fix --verbose";
   };
 
   ruffFormatCheck = makeCheck {
@@ -19,8 +19,8 @@ let
     description = "Python formatting with ruff";
     dependencies = with pkgs; [ ruff ];
     roots = [ "src" "tests" ];
-    command = "ruff format";
-    verboseCommand = "ruff format --verbose";
+    command = "ruff format --exit-non-zero-on-format";
+    verboseCommand = "ruff format --exit-non-zero-on-format --verbose";
   };
 
   pyrightCheck = makeCheck {

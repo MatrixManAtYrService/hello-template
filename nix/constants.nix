@@ -8,4 +8,7 @@
 
   # The main CLI message
   greeting = "hello world!";
+
+  # Test bad formatting
+  test = { foo = "bar"; baz = 123; };
 }

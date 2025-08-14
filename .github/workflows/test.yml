@@ -36,17 +36,7 @@ jobs:
           purge-last-accessed: 0
           purge-primary-key: never
 
-      - name: Run code generation
-        run: nix run .#codegen
-
-      - name: Run Nix analysis
-        run: nix run .#nix-analysis
-
-      - name: Run Python analysis
-        run: nix run .#python-analysis
-
-      - name: Run tests
-        run: nix develop --command pytest
-
-      - name: Generate documentation
-        run: nix run .#docs
+      - name: Run steps.sh
+        run: ./steps.sh
+        env:
+          CI: "1"

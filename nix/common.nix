@@ -11,11 +11,51 @@ let
       roots = args.roots or [ "." ]; # Default to current directory
       commandArg = args.command or (throw "makeCheck: 'command' is required");
       verboseCommandArg = args.verboseCommand or commandArg;
+      checkGitChanges = args.checkGitChanges or false;
+      rootsStr = builtins.concatStringsSep " " roots;
+
+      # Wrap command with git change detection if requested
+      wrapWithGitCheck = cmd: verbose:
+        if checkGitChanges then ''
+          # Store git status before command
+          git_status_before=$(git status --porcelain ${rootsStr} || true)
+
+          # Run the actual command
+          ${cmd}
+          command_exit_code=$?
+
+          # Check git status after command
+          git_status_after=$(git status --porcelain ${rootsStr} || true)
+
+          if [[ "$git_status_before" != "$git_status_after" ]]; then
+            echo "📝 Files were modified by ${name}:"
+            echo "$git_status_after"
+
+            if [[ "''${CI:-0}" == "1" ]]; then
+              echo ""
+              echo "❌ Files were out of date in CI!"
+              echo "To fix this, run the analysis tools locally and commit the changes."
+              exit 1
+            else
+              echo ""
+              echo "✅ Files have been updated"
+              echo "💡 Consider committing these changes"
+            fi
+          else
+            echo "✅ No changes made by ${name}"
+          fi
+
+          # Return the original command's exit code
+          exit $command_exit_code
+        '' else cmd;
+
+      wrappedCommand = wrapWithGitCheck commandArg false;
+      wrappedVerboseCommand = wrapWithGitCheck verboseCommandArg true;
 
       # Generate commands for each root
       generateRootCommands = verbose:
         let
-          cmdToUse = if verbose then verboseCommandArg else commandArg;
+          cmdToUse = if verbose then wrappedVerboseCommand else wrappedCommand;
         in
         builtins.concatStringsSep "\n\n" (map
           (root: ''
@@ -34,12 +74,12 @@ let
       } // (args.environment or { });
 
       # Resolve dependencies with basic tools
-      resolvedDeps = dependencies ++ (with pkgs; [ coreutils ]);
+      resolvedDeps = dependencies ++ (with pkgs; [ coreutils ]) ++ (if checkGitChanges then [ pkgs.git ] else [ ]);
     in
     {
       inherit name description roots;
-      command = commandArg;
-      verboseCommand = verboseCommandArg;
+      command = wrappedCommand;
+      verboseCommand = wrappedVerboseCommand;
       scriptContent = ''
         # Set up environment variables
         ${pkgs.lib.concatStringsSep "\n" (pkgs.lib.mapAttrsToList (k: v: "export ${k}=${pkgs.lib.escapeShellArg (toString v)}") environment)}
