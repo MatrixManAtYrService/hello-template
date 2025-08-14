@@ -1,4 +1,5 @@
-[![Test](https://github.com/MatrixManAtYrService/hello-template/workflows/Test/badge.svg)](https://github.com/MatrixManAtYrService/hello-template/actions/workflows/test.yml)
+[![Test](https://github.com/MatrixManAtYrService/hello-template/workflows/Test/badge.svg)](https://github.com/MatrixManAtYrService/hello-template/actions/workflows/test.yml) [docs](https://matrixmanatyrservice.github.io/hello-template/hello.html).
+
 
 # hello
 

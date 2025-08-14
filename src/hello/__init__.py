@@ -1,5 +1,14 @@
 """
-hello
+A simple CLI application that demonstrates modern Python development practices.
+
+# Command Line Usage
+
+```
+$ hello --help
+# DOCS_OUTPUT: hello --help
+```
+
+# Docs Usage
 
 For public repos (or private ones with enterprise subscriptions), you can enable github pages in *settings* and API docs will appear at [https://{username}.github.io/{repo}/{package name}.html](https://matrixmanatyrservice.github.io/hello-template/hello.html).
 
